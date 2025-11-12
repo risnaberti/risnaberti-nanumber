@@ -222,7 +222,7 @@ Jika kamu menemukan bug atau ide fitur baru, silakan buat issue di GitHub:
 ## 🌟 Dukungan & Kontak
 Jika kamu menggunakan library ini di project kamu, kasih bintang di GitHub ⭐  
 
-📧 **Email:** your@email.com  
+📧 **Email:** risnaberti07@gmail.com  
 🐙 **GitHub:** [@risnaberti](https://github.com/risnaberti)
 
 ---
