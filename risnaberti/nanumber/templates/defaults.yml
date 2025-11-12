@@ -1,0 +1,6 @@
+supplier:
+  template: "#SUP-{y}{number}"
+  pad: 4
+invoice:
+  template: "INV-{Y}-{number}"
+  pad: 4
