@@ -2,12 +2,15 @@
 requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
+[tool.setuptools]
+include-package-data = true
+
 [project]
 name = "risnaberti-nanumber"
-version = "0.1.0"
+version = "0.1.1"
 description = "Universal auto-number generator by Risna Berti (Nanumber)"
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.7"
 license = {text = "MIT"}
 authors = [
   { name = "Risna Berti", email = "risnaberti@gmail.com" }
