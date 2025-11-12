@@ -1,7 +1,7 @@
 # 📦 Risnaberti Nanumber
 
 ![PyPI version](https://img.shields.io/pypi/v/risnaberti-nanumber.svg?style=flat-square)
-![Python version](https://img.shields.io/badge/python-3.9%2B-blue)
+![Python version](https://img.shields.io/badge/python-3.7%2B-blue)
 ![License](https://img.shields.io/github/license/risnaberti/nanumber?style=flat-square)
 ![Status](https://img.shields.io/pypi/status/risnaberti-nanumber?style=flat-square)
 
@@ -29,40 +29,42 @@ pip install risnaberti-nanumber
 
 ---
 
-## ⚙️ Penggunaan Dasar
+## ⚙️ Quick Start (Demo Mode)
+
+> 🧩 Gunakan `MemoryStorage` untuk testing atau eksplorasi awal.  
+> Data hanya disimpan sementara di RAM — akan hilang setelah program dihentikan.
 
 ```python
 from risnaberti.nanumber import NumberGenerator, MemoryStorage
 
-# Gunakan penyimpanan in-memory
+# Gunakan penyimpanan in-memory (sementara)
 storage = MemoryStorage()
 gen = NumberGenerator(storage)
 
 print(gen.generate("supplier", "#SUP-{y}{number}"))
 # 👉 #SUP-250001
 ```
+> Cocok untuk demo atau unit test, **bukan untuk produksi**.
 
 ---
 
-## 💾 Menggunakan SQLite / PostgreSQL
+## 💾 Production Mode (Persistent Storage)
+
+> 💾 Gunakan `SQLAlchemyStorage` untuk penyimpanan permanen di database.  
+> Nanumber akan otomatis membuat tabel `auto_numbers` untuk menyimpan `last_value`.
 
 ```python
 from risnaberti.nanumber import NumberGenerator, SQLAlchemyStorage
 
-# Gunakan SQLite
+# Gunakan SQLite (atau PostgreSQL/MySQL)
 storage = SQLAlchemyStorage("sqlite:///nanumber.db")
-
-# Atau PostgreSQL
-# storage = SQLAlchemyStorage("postgresql+psycopg2://user:password@localhost/nanumber_db")
 
 gen = NumberGenerator(storage)
 print(gen.generate("invoice", "INV-{Y}-{number:04d}"))
 # 👉 INV-2025-0001
 ```
 
-> **Catatan:**  
-> Nanumber otomatis membuat tabel `auto_numbers` bila belum ada.  
-> Counter di-reset otomatis ketika tahun berganti.
+> Setelah restart aplikasi, nomor akan berlanjut dari nilai terakhir di tabel database.
 
 ---
 
@@ -101,21 +103,13 @@ def generate_number(entity: str):
 uvicorn app.main:app --reload
 ```
 
-Lalu buka:
+Buka:
 - 🔹 [http://localhost:8000/generate/supplier](http://localhost:8000/generate/supplier)  
 - 🔹 [http://localhost:8000/generate/invoice](http://localhost:8000/generate/invoice)
 
 ---
 
 ## 🧩 Integrasi dengan Django
-
-### 1️⃣ Tambahkan ke `requirements.txt`
-
-```
-risnaberti-nanumber
-```
-
-### 2️⃣ Gunakan di `signals.py`
 
 ```python
 # apps/supplier/signals.py
@@ -133,8 +127,6 @@ def generate_supplier_code(sender, instance, **kwargs):
         instance.code = gen.generate("supplier", "#SUP-{y}{number}")
 ```
 
-Sekarang setiap kali buat supplier baru, field `code` otomatis terisi.
-
 ---
 
 ## 🔢 Contoh Format Nomor
@@ -144,19 +136,6 @@ Sekarang setiap kali buat supplier baru, field `code` otomatis terisi.
 | `#SUP-{y}{number}` | `#SUP-250001` | Tahun 2 digit |
 | `INV-{Y}-{number:05d}` | `INV-2025-00001` | Tahun penuh + padding |
 | `{m}{number:03d}` | `11001` | Reset otomatis tiap tahun |
-
----
-
-## ⚙️ Konfigurasi via YAML / ENV (opsional)
-
-Buat file `.nanumber.yml` di root project:
-
-```yaml
-default_format: "#SUP-{y}{number}"
-entities:
-  supplier: "#SUP-{y}{number:04d}"
-  invoice: "INV-{Y}-{number:05d}"
-```
 
 ---
 
@@ -222,7 +201,7 @@ Jika kamu menemukan bug atau ide fitur baru, silakan buat issue di GitHub:
 ## 🌟 Dukungan & Kontak
 Jika kamu menggunakan library ini di project kamu, kasih bintang di GitHub ⭐  
 
-📧 **Email:** risnaberti07@gmail.com  
+📧 **Email:** risnaberti07@gmail.com 
 🐙 **GitHub:** [@risnaberti](https://github.com/risnaberti)
 
 ---
